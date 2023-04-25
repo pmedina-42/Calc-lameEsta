@@ -61,29 +61,31 @@ class SumActivity : ComponentActivity() {
         }.start()
 
         next.setOnClickListener {
-            if (res.text.isNotEmpty() && attempts < 19) {
-                attempts += 1
-                if (Integer.parseInt(res.text.toString()) == expectedRes) {
-                    success += 1
+            if (res.text.isNotEmpty()) {
+                if (attempts < 19) {
+                    attempts += 1
+                    if (Integer.parseInt(res.text.toString()) == expectedRes) {
+                        success += 1
+                    }
+                    Log.i("Attempts", "$attempts")
+                    n1 = Random.nextInt(300)
+                    n2 = Random.nextInt(300)
+                    n3 = Random.nextInt(300)
+                    n4 = Random.nextInt(300)
+                    n5 = Random.nextInt(300)
+                    n6 = Random.nextInt(300)
+                    sumString.text = "$n1 + $n2 + $n3 + $n4 + $n5 + $n6"
+                    expectedRes = n1 + n2 + n3 + n4 + n5 + n6
+                    res.text.clear()
+                    Log.i("Introduced result", "${res.text}")
+                } else {
+                    val sender = Intent(this, FinalActivity::class.java)
+                    sender.putExtra("success", success)
+                    sender.putExtra("attempts", attempts)
+                    val elapsedTime:Long = System.currentTimeMillis() - startTime
+                    sender.putExtra("timeElapsed", elapsedTime)
+                    startActivity(sender)
                 }
-                Log.i("Attempts", "$attempts")
-                n1 = Random.nextInt(300)
-                n2 = Random.nextInt(300)
-                n3 = Random.nextInt(300)
-                n4 = Random.nextInt(300)
-                n5 = Random.nextInt(300)
-                n6 = Random.nextInt(300)
-                sumString.text = "$n1 + $n2 + $n3 + $n4 + $n5 + $n6"
-                expectedRes = n1 + n2 + n3 + n4 + n5 + n6
-                res.text.clear()
-                Log.i("Introduced result", "${res.text}")
-            } else {
-                val sender = Intent(this, FinalActivity::class.java)
-                sender.putExtra("success", success)
-                sender.putExtra("attempts", attempts)
-                val elapsedTime:Long = System.currentTimeMillis() - startTime
-                sender.putExtra("timeElapsed", elapsedTime)
-                startActivity(sender)
             }
         }
     }
