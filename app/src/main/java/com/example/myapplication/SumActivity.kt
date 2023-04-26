@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import org.json.JSONObject
 import kotlin.random.Random
 
 class SumActivity : ComponentActivity() {
@@ -18,6 +19,7 @@ class SumActivity : ComponentActivity() {
 
     var attempts:Int = 0
     var success:Int = 0
+    val resultMap: MutableMap<String, Boolean> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,26 +64,33 @@ class SumActivity : ComponentActivity() {
 
         next.setOnClickListener {
             if (res.text.isNotEmpty()) {
-                if (attempts < 19) {
-                    attempts += 1
-                    if (Integer.parseInt(res.text.toString()) == expectedRes) {
-                        success += 1
-                    }
-                    Log.i("Attempts", "$attempts")
+                attempts += 1
+                if (Integer.parseInt(res.text.toString()) == expectedRes) {
+                    success += 1
+                    resultMap["$sum = $expectedRes"] = true
+                } else {
+                    resultMap["$sum = $expectedRes"] = false
+                }
+                Log.i("ResultMap", "$resultMap")
+                Log.i("Attempts", "$attempts")
+                if (attempts < 10) {
                     n1 = Random.nextInt(300)
                     n2 = Random.nextInt(300)
                     n3 = Random.nextInt(300)
                     n4 = Random.nextInt(300)
                     n5 = Random.nextInt(300)
                     n6 = Random.nextInt(300)
-                    sumString.text = "$n1 + $n2 + $n3 + $n4 + $n5 + $n6"
+                    sum = "$n1 + $n2 + $n3 + $n4 + $n5 + $n6"
+                    sumString.text = sum
                     expectedRes = n1 + n2 + n3 + n4 + n5 + n6
                     res.text.clear()
-                    Log.i("Introduced result", "${res.text}")
                 } else {
+                    val jsonObject = JSONObject(resultMap as Map<*, *>?)
                     val sender = Intent(this, FinalActivity::class.java)
                     sender.putExtra("success", success)
                     sender.putExtra("attempts", attempts)
+                    Log.i("ResultMap", "$jsonObject")
+                    sender.putExtra("resultMap", jsonObject.toString())
                     val elapsedTime:Long = System.currentTimeMillis() - startTime
                     sender.putExtra("timeElapsed", elapsedTime)
                     startActivity(sender)
