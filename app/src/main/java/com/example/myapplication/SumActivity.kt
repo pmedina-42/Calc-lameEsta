@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -36,10 +35,8 @@ class SumActivity : ComponentActivity() {
         var sum = "$n1 + $n2 + $n3 + $n4 + $n5 + $n6"
         sumString.text = sum
         var expectedRes:Int = n1 + n2 + n3 + n4 + n5 + n6
-        Log.i("Result", "$expectedRes")
 
         val finalMins:Int = intent.getIntExtra("mins", 20)
-        Log.i("Final mins", "$finalMins")
         val timeLeftInMillis:Int = finalMins * 60 * 1000
         attempts = intent.getIntExtra("attempts", 0)
         success = intent.getIntExtra("success", 0)
@@ -71,8 +68,6 @@ class SumActivity : ComponentActivity() {
                 } else {
                     resultMap["$sum = $expectedRes"] = false
                 }
-                Log.i("ResultMap", "$resultMap")
-                Log.i("Attempts", "$attempts")
                 if (attempts < 10) {
                     n1 = Random.nextInt(300)
                     n2 = Random.nextInt(300)
@@ -89,7 +84,7 @@ class SumActivity : ComponentActivity() {
                     val sender = Intent(this, FinalActivity::class.java)
                     sender.putExtra("success", success)
                     sender.putExtra("attempts", attempts)
-                    Log.i("ResultMap", "$jsonObject")
+
                     sender.putExtra("resultMap", jsonObject.toString())
                     val elapsedTime:Long = System.currentTimeMillis() - startTime
                     sender.putExtra("timeElapsed", elapsedTime)

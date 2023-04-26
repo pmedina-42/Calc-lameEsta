@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -24,7 +23,6 @@ class FinalActivity : ComponentActivity() {
         val resJson = JSONObject(resMap)
         val resIterator = resJson.keys()
 
-        Log.i("FinalResultMap", "$resMap")
 
         var result = findViewById<TextView>(R.id.result)
         var time = findViewById<TextView>(R.id.time)
@@ -44,7 +42,6 @@ class FinalActivity : ComponentActivity() {
         if (sec > 0) {
             filledTime += "$sec s"
         }
-        Log.i("Filled time ", "$filledTime")
         time.text = filledTime
         val showResultsButton = findViewById<Button>(R.id.showResults)
         val closeViewButton = findViewById<Button>(R.id.closeButton)
